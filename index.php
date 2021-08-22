@@ -3,21 +3,38 @@
 
 <?php
 $info = '';
+$js = '';
 
 if (isset($_POST["submit"])) {
-    if (empty($_POST["email"]) || (empty($_POST["message"]) && empty($_POST["subject"]))) {
-        $info = "Please Fill the necessary field to continue";
-    } else {
-        session_start();
-        $_SESSION["email"] = $_POST["email"];
-        $email = $_SESSION["email"];
-        $info = "Dear $email, Your Message was Sent Sucessfully.";
-    }
+    // if (empty($_POST["email"]) || (empty($_POST["message"]) && empty($_POST["subject"]))) {
+    //     $info = "Please Fill the necessary field to continue";
+    // } else {
+    session_start();
+    $_SESSION["email"] = $_POST["email"];
+    $email = $_SESSION["email"];
+    $js = "<script type='text/javascript'>
+    $(document).ready(function() {
+        // Handler for .ready() called.
+        $('html, body').animate({
+            scrollTop: $('#scroll').offset().top
+        }, 'slow');
+    });
+    </script>";
+    $info =
+        '<div class="alert alert-warning alert-dismissible fade show bg-primary" style="color:white" role="alert">
+                 Hey ' . $email . ', Your Message was Sent Sucessfully.
+                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+    // }
 }
 ?>
 
 
 <head>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
@@ -61,9 +78,6 @@ if (isset($_POST["submit"])) {
     </nav>
     <!-- Page Content-->
     <div class="container-fluid p-0">
-        <div class="">
-            <h3 class="text-info"><?php echo $info ?></h3>
-        </div>
 
         <!-- About-->
         <section class="resume-section" id="about">
@@ -233,15 +247,22 @@ if (isset($_POST["submit"])) {
             <div class="resume-section-content">
                 <h2 class="mb-5">Contact-Me</h2>
                 <form action="index.php" method="post" class="row gx-3 gy-2 align-items-center p-3"
-                    style="padding-top:none;">
+                    style="padding-top:none;" id="scroll">required
 
                     <input type="text" name="name" class="form-control my-2 shadow-none" id="" placeholder="Name">
-                    <input type="email" name="email" class="form-control my-2 shadow-none" id="" placeholder="Email">
-                    <input type="text" name="subject" class="form-control my-2 shadow-none" id="" placeholder="Subject">
-                    <input type="text" name="message" class="form-control my-2 shadow-none" id="" placeholder="Message">
-                    <button type="submit" name='submit' lass="btn btn-primary shadow-none">Submit</button>
+                    <input type="email" name="email" class="form-control my-2 shadow-none" id="" placeholder="Email"
+                        required>
+                    <input type="text" name="subject" class="form-control my-2 shadow-none" id="" placeholder="Subject"
+                        required>
+                    <input type="text" name="message" class="form-control my-2 shadow-none" id="" placeholder="Message"
+                        required>
+                    <button type="submit" name='submit' class="btn btn-primary shadow-none text-white">Submit</button>
 
                 </form>
+                <div class="" style="color:white;">
+                    <?php echo $js ?>
+                    <h3><?php echo $info ?></h3>
+                </div>
             </div>
         </section>
         <div class="text-center" style="padding-bottom: 30px;">Sponsored by <a class="text-center text-decoration-none"
